@@ -37,8 +37,8 @@ None. This slice proves the stack before Viaduct is added.
   ([ADR 0009](../decisions/0009-domain-packages-with-ports-and-adapters.md)). The status card belongs to a `system`
   domain, embedded Postgres to `platform`, and the home page to `home`. An architecture test enforces the rules.
 - **Makefile:** `make` lists the targets. `make run`, `make test`, `make build`, `make check`, `make format` and
-  `make clean` wrap Gradle; `make setup` installs the pinned JDK with asdf; `make db-reset` deletes the local
-  database. Make sets `JAVA_HOME` from asdf when asdf has a Java version for this folder.
+  `make clean` wrap Gradle; `make setup` installs the pinned JDK with asdf; `make stop` stops every app and embedded
+  Postgres started from this checkout; `make db-reset` stops them, then deletes the local database. Make sets `JAVA_HOME` from asdf when asdf has a Java version for this folder.
 - **Web stack:**
   - Spring MVC and Thymeleaf.
   - Shadleaf 0.7.0 and `htmx-spring-boot-thymeleaf` 5.2.0.
@@ -97,7 +97,7 @@ None. This slice proves the stack before Viaduct is added.
 - [x] The resolved classpath has no `graphql-java` artifact (`./gradlew :app:dependencies`).
 - [x] No template uses the Thymeleaf Layout Dialect, and no page loads a script from a CDN.
 - [x] `make` lists the targets, and `make test` and `make run` work from a fresh shell with no `JAVA_HOME` set.
-- [ ] CI passes on this slice's pull request, on Ubuntu and macOS.
+- [x] CI passes on this slice's pull request, on Ubuntu and macOS.
 - [x] The architecture test fails when a `domain` package depends on Spring or on an adapter, and when one domain
   reaches into another domain's internals.
 
@@ -170,4 +170,9 @@ Checked on 2026-10-08 on macOS arm64.
     close. A full test run left no new directories (11 left by earlier runs were removed).
   - **Guards.** The template rules check sample strings, including `th:src="@{https://…}"` and
     `~{sl/layout::assets}`. The domain rule is an allowlist and failed on a `jakarta` import in `system.domain`.
+- **`make stop`.** In a scratch copy, it stopped a running app with SIGTERM (graceful shutdown, port freed) and left no
+  Postgres behind. After `kill -9` on the app, the orphaned Postgres made the next `make run` fail ("Is another
+  postmaster … running"); `make stop` shut it down and the next run reused the data. It finds Postgres by the working
+  directory, which is its data directory, so another checkout's Postgres was left running. `shellcheck` passes, and it
+  ran under macOS's bash 3.2.
 - **Tag:** S00 has no chapter, so no `chNN` tag.

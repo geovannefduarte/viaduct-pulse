@@ -44,10 +44,11 @@ version for this folder (`.tool-versions`).
 | Command | Does |
 |---|---|
 | `make run` | Starts the app on http://localhost:8080 with the `local` profile; data lives in `.pulse/pgdata` |
+| `make stop` | Stops every app and embedded Postgres started from this checkout, including a Postgres left behind when the app was killed |
 | `make test` | Runs every test, including the architecture rules |
 | `make build` | Compiles, runs every test and checks formatting |
 | `make format` | Formats Kotlin sources and Gradle scripts with ktlint |
-| `make db-reset` | Deletes the local database; stop the app first |
+| `make db-reset` | Stops the app, then deletes the local database |
 
 Each target wraps `./gradlew`, which works directly too, for example `./gradlew :app:test --tests '*StatusControllerTest'`.
 

@@ -7,7 +7,7 @@ ifneq ($(ASDF_JAVA_HOME),)
 export JAVA_HOME := $(ASDF_JAVA_HOME)
 endif
 
-.PHONY: help setup run test build check format clean db-reset
+.PHONY: help setup run stop test build check format clean db-reset
 
 help: ## List the targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-z-]+:.*## / {printf "  %-10s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -18,6 +18,9 @@ setup: ## Install the JDK pinned in .tool-versions with asdf
 
 run: ## Start the app on http://localhost:8080 with the local profile
 	$(GRADLE) :app:bootRun
+
+stop: ## Stop every app and embedded Postgres started from this checkout
+	@scripts/stop.sh
 
 test: ## Run every test
 	$(GRADLE) test
@@ -34,5 +37,5 @@ format: ## Format Kotlin sources and Gradle scripts
 clean: ## Delete build outputs
 	$(GRADLE) clean
 
-db-reset: ## Delete the local database in .pulse/pgdata; stop the app first
+db-reset: stop ## Stop the app, then delete the local database in .pulse/pgdata
 	rm -rf .pulse/pgdata
