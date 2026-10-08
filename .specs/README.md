@@ -35,8 +35,12 @@ planned against the code that exists.
 
 ## Decisions
 
-An ADR is `decisions/NNNN-short-title.md` with Status, Context, Decision and Consequences. An accepted ADR is not
-edited. A new ADR supersedes it, and the old one's Status links the new one.
+An ADR is `decisions/NNNN-short-title.md` with Status, Context, Decision and Consequences.
+
+- **To change a decision,** write a new ADR that supersedes the old one, and link the new one from the old one's
+  Status. The accepted ADR keeps its original decision, so the history stays readable.
+- **To fix a wrong fact** that doesn't change the decision, edit the ADR in place and add "Corrected <date>: <what>"
+  to its Status.
 
 ## Writing rules
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sl="https://shadleaf.dev/sl"
+      xmlns:hx="https://github.com/wimdeblauwe/htmx-spring-boot">
+<body>
+<div id="status-card" class="status-card" th:fragment="status-card(status)">
+  <div th:if="${status == null}"
+       hx:get="@{/status}" hx-trigger="load, retry" hx-target="closest .status-card" hx-swap="outerHTML">
+    <sl:card aria-busy="true">
+      <sl:card-header>
+        <sl:card-title level="2" th:text="#{status.title}">Database</sl:card-title>
+      </sl:card-header>
+      <sl:card-content data-request-error-slot>
+        <p class="status-loading" th:text="#{status.loading}">Loading…</p>
+        <sl:skeleton/>
+        <sl:skeleton/>
+      </sl:card-content>
+    </sl:card>
+  </div>
+  <sl:card th:unless="${status == null}">
+    <sl:card-header>
+      <sl:card-title level="2" th:text="#{status.title}">Database</sl:card-title>
+      <sl:card-description th:text="#{status.description}">Embedded Postgres</sl:card-description>
+    </sl:card-header>
+    <sl:card-content>
+      <dl class="status-list">
+        <dt th:text="#{status.version}">Postgres version</dt>
+        <dd id="postgres-version" th:text="${status.postgresVersion}">18.6</dd>
+        <dt th:text="#{status.migrations}">Applied migrations</dt>
+        <dd id="applied-migrations">
+          <span th:if="${status.appliedMigrations.isEmpty()}" th:text="#{status.migrations.none}">None</span>
+          <ul th:unless="${status.appliedMigrations.isEmpty()}">
+            <li th:each="migration : ${status.appliedMigrations}"
+                th:text="#{status.migration(${migration.version}, ${migration.description})}">V1 create sync state</li>
+          </ul>
+        </dd>
+      </dl>
+    </sl:card-content>
+  </sl:card>
+</div>
+</body>
+</html>

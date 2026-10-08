@@ -1,1 +1,10 @@
 CLAUDE.local.md
+
+.gradle/
+build/
+.kotlin/
+.pulse/
+
+.idea/
+*.iml
+.DS_Store

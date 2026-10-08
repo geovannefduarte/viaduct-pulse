@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: layout(#{error.5xx.title}, ~{::#page-content})}">
+<body>
+<div id="page-content" class="page-content">
+  <p th:text="#{error.5xx.message}">The server couldn't complete your request.</p>
+  <pre id="error-trace" class="error-trace" th:if="${trace}" th:text="${trace}">trace</pre>
+  <p><a id="back-home" th:href="@{/}" th:text="#{error.home}">Back to the home page</a></p>
+</div>
+</body>
+</html>

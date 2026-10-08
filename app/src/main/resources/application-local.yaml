@@ -1,0 +1,11 @@
+spring:
+  thymeleaf:
+    cache: false
+  web:
+    resources:
+      cache:
+        period: 0
+
+server:
+  error:
+    include-stacktrace: always

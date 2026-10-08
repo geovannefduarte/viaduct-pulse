@@ -50,8 +50,11 @@ source. When a newer source contradicts an older one, the newer one wins and the
 
 ## Controllers
 
-- **Controllers stay thin and delegate to services.** There is one controller per path section, in a `web`
-  sub-package of the feature. (TT ch7 §7.1, §7.6)
+- **Controllers stay thin and delegate to services.** There is one controller per path section, in the `web`
+  package of its domain, and it calls that domain's `application` layer. (TT ch7 §7.1, §7.6) **Adapted:** TT puts
+  `web` directly under the feature; we add the layers of
+  [ADR 0009](decisions/0009-domain-packages-with-ports-and-adapters.md).
+- **Templates follow the domains:** `templates/<domain>/…`, plus the shared `layout/` and `error/`. **Ours.**
 - **URLs follow one scheme:** `GET /runs`, `GET /runs/{id}`, `GET|POST /runs/{id}/annotations`. (TT ch11–13)
 - **After a successful form POST, redirect** (Post/Redirect/Get), with a flash message where useful. (TT §7.4, §13.3)
 - **Typed IDs bind through a `Converter`.** Shared reference data comes from `@ModelAttribute` methods, and app-wide
@@ -81,7 +84,10 @@ source. When a newer source contradicts an older one, the newer one wins and the
   reload or a shared link reproduces the state. (MFH §3.2.1, §9.9.2)
 - **Put the default `hx-target` and `hx-swap` on a container,** not repeated on each child. (MFH §9.11.2)
 - **Set a global request timeout** in the `htmx-config` meta tag, and show request errors through one document-level
-  handler. (MFH §7.1.5)
+  handler. (MFH §7.1.5) In Pulse that handler is `static/js/request-errors.js`. A region that loads over htmx marks
+  where its error goes with `data-request-error-slot`, gets the shared error message and a "Try again" button that
+  re-triggers it with the `retry` event, and has `aria-busy` cleared. Any other failed request shows a page-level
+  alert. **Ours.**
 - **Long-running work starts with polling** that stops itself when the work finishes. Move to SSE (`SseEmitter`,
   named events, a 5-second heartbeat) only when streamed output is needed. **Adapted:** MFH §11.1 uses WebFlux.
   (MFH §9.11, §11.1)
@@ -116,6 +122,8 @@ source. When a newer source contradicts an older one, the newer one wins and the
 
 - **All user-facing text lives in message bundles from the first slice.** Translate whole sentences with
   placeholders. (TT ch8, §10.4)
+- **Write `''` for an apostrophe only in messages that take arguments.** Spring skips `MessageFormat` for a message
+  without arguments, so `doesn''t` would render literally. `StackRulesTest` checks the bundle. **Ours.**
 - **Error pages per status code** live in `templates/error/`. Stack traces are shown only under the `local`
   profile. (TT §12.5)
 - **The simulated viewer is an app-wide model attribute.** Templates hide what the viewer can't use, and the server
@@ -131,3 +139,6 @@ source. When a newer source contradicts an older one, the newer one wins and the
   Postgres.
 - **Test data comes from Object Mother classes,** for example `Commits.aCommit()`. (TT ch15)
 - **No Cypress.** It needs Node and Docker. A browser-level test tool is an open question for later slices.
+- **HtmlUnit doesn't run htmx.** HtmlUnit 4.21's JavaScript engine fails to parse `htmx.min.js` 2.0.11 with a syntax
+  error, so HtmlUnit tests run with JavaScript off and check the server-rendered markup. htmx behavior is checked in
+  a real browser until a browser-level test tool is chosen. Verified 2026-10-08.
