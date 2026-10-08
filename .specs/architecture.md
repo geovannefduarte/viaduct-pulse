@@ -6,7 +6,7 @@ Versions were checked on Maven Central, the npm registry and services.gradle.org
 
 | Layer | Choice | Version | Decision |
 |---|---|---|---|
-| JDK | toolchain | 21 | Viaduct supports 17+; Shadleaf needs 17+ |
+| JDK | pinned in `.tool-versions` (asdf); Gradle toolchain 25; bytecode target 24 | 25 | [ADR 0008](decisions/0008-java-25-via-asdf.md) |
 | Language | Kotlin, held below Spring Boot's managed version | 2.2.21 | [ADR 0006](decisions/0006-spring-boot-4-1-with-kotlin-2-2.md) |
 | Framework | Spring Boot, Spring MVC | 4.1.1 | [ADR 0006](decisions/0006-spring-boot-4-1-with-kotlin-2-2.md) |
 | GraphQL server | Viaduct | 2.0.0, the only 2.x release | — |
@@ -20,6 +20,7 @@ Versions were checked on Maven Central, the npm registry and services.gradle.org
 | Browser libraries | webjars `org.webjars.npm:htmx.org` and `org.webjars.npm:graphiql`, served via `webjars-locator-lite` | htmx 2.0.11, GraphiQL 5.2.1, locator managed by Spring Boot | [ADR 0007](decisions/0007-ui-follows-wim-deblauwe-with-shadleaf.md) |
 | Browser-level tests | HtmlUnit | managed by Spring Boot (4.21.0) | [UI guidelines](ui-guidelines.md#testing) |
 | Build | Gradle, Kotlin DSL, version catalog | 9.1.0 | — |
+| Formatting and lint | Spotless with ktlint | Spotless 8.10.3, ktlint 1.8.0 | — |
 
 Gradle 9.1.0 is what Viaduct's own demo apps used when 2.0.0 was released. Gradle 9.8.1 is current.
 
