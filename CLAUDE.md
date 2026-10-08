@@ -50,3 +50,6 @@ version for this folder (`.tool-versions`).
 | `make db-reset` | Deletes the local database; stop the app first |
 
 Each target wraps `./gradlew`, which works directly too, for example `./gradlew :app:test --tests '*StatusControllerTest'`.
+
+CI (`.github/workflows/ci.yml`) runs `make build` on Ubuntu and macOS for every pull request. Pull requests follow
+`.github/pull_request_template.md`: add screenshots, light and dark, when a page changes.

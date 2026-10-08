@@ -1,6 +1,6 @@
 # S00: Skeleton
 
-- **Status:** done
+- **Status:** in-progress
 - **Chapter:** none
 - **Links:**
   - [architecture](../architecture.md)
@@ -64,7 +64,12 @@ None. This slice proves the stack before Viaduct is added.
     of the `airbnb/viaduct` GitHub repository, no emails).
   - The Commands section of `CLAUDE.md`.
 
-**Out:** Viaduct, sync logic, CI, GraphiQL.
+- **CI and pull requests:**
+  - `.github/workflows/ci.yml` runs `make build` on Ubuntu and macOS for every pull request and every push to `main`.
+    Actions are pinned to commit SHAs. Gradle caching uses the open-source `basic` provider.
+  - `.github/pull_request_template.md`, with a Screenshots section for UI changes.
+
+**Out:** Viaduct, sync logic, the Viaduct version matrix (S03), GraphiQL.
 
 ## Design
 
@@ -92,6 +97,7 @@ None. This slice proves the stack before Viaduct is added.
 - [x] The resolved classpath has no `graphql-java` artifact (`./gradlew :app:dependencies`).
 - [x] No template uses the Thymeleaf Layout Dialect, and no page loads a script from a CDN.
 - [x] `make` lists the targets, and `make test` and `make run` work from a fresh shell with no `JAVA_HOME` set.
+- [ ] CI passes on this slice's pull request, on Ubuntu and macOS.
 - [x] The architecture test fails when a `domain` package depends on Spring or on an adapter, and when one domain
   reaches into another domain's internals.
 
