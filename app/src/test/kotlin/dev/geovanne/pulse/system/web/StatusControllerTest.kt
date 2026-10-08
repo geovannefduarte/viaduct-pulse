@@ -1,7 +1,7 @@
-package dev.geovanne.pulse.status.web
+package dev.geovanne.pulse.system.web
 
-import dev.geovanne.pulse.status.DatabaseStatusService
-import dev.geovanne.pulse.status.DatabaseStatuses.aDatabaseStatus
+import dev.geovanne.pulse.system.application.DatabaseStatusService
+import dev.geovanne.pulse.system.domain.DatabaseStatuses.aDatabaseStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.htmlunit.WebClient
 import org.htmlunit.html.HtmlPage

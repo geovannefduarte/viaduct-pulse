@@ -4,7 +4,7 @@
 <body>
 <div id="page-content" class="page-content">
   <p class="page-intro" th:text="#{home.intro}">Intro</p>
-  <th:block th:replace="~{status :: status-card(status=${status})}"></th:block>
+  <th:block th:replace="~{system/status :: status-card(status=${status})}"></th:block>
 </div>
 </body>
 </html>

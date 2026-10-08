@@ -1,4 +1,4 @@
-package dev.geovanne.pulse.database
+package dev.geovanne.pulse.platform.database
 
 import org.assertj.core.api.Assertions.assertThat
 import org.flywaydb.core.Flyway
