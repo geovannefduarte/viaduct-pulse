@@ -1,6 +1,6 @@
 # S00: Skeleton
 
-- **Status:** in-progress
+- **Status:** done
 - **Chapter:** none
 - **Links:**
   - [architecture](../architecture.md)
@@ -175,4 +175,7 @@ Checked on 2026-10-08 on macOS arm64.
   postmaster … running"); `make stop` shut it down and the next run reused the data. It finds Postgres by the working
   directory, which is its data directory, so another checkout's Postgres was left running. `shellcheck` passes, and it
   ran under macOS's bash 3.2.
+- **CI.** Green on Ubuntu and macOS for the merged head of #2
+  ([run 37850579643](https://github.com/geovannefduarte/viaduct-pulse/actions/runs/37850579643)) and for the push to
+  `main` ([run 37851219715](https://github.com/geovannefduarte/viaduct-pulse/actions/runs/37851219715)).
 - **Tag:** S00 has no chapter, so no `chNN` tag.
