@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: viaduct-pulse
+  messages:
+    basename: i18n/messages
+
+server:
+  port: 8080

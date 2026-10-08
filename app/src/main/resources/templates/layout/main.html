@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sl="https://shadleaf.dev/sl"
+      th:fragment="layout(pageTitle, content)">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="|${pageTitle} · #{app.name}|">Pulse</title>
+  <th:block th:replace="~{sl/layout :: theme-script}"></th:block>
+  <th:block th:replace="~{sl/layout :: assets}"></th:block>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <meta name="htmx-config" content='{"timeout": 10000, "includeIndicatorStyles": false, "allowEval": false}'>
+  <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+</head>
+<body>
+<sl:skip-link/>
+<sl:site-header>
+  <sl:button as="a" th:href="@{/}" variant="ghost" id="site-name">
+    <span th:text="#{app.name}">Pulse</span>
+  </sl:button>
+  <sl:slot name="end">
+    <sl:theme-toggle/>
+  </sl:slot>
+</sl:site-header>
+<main id="main" tabindex="-1" class="page">
+  <h1 class="page-title" th:text="${pageTitle}">Title</h1>
+  <th:block th:replace="${content}"></th:block>
+</main>
+</body>
+</html>
