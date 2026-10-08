@@ -11,10 +11,12 @@ This folder plans viaduct-pulse. Agents and humans read it before writing code.
 | `domain.md` | Pulse entities, tenants, viewers, schema sketch | a slice adds entities |
 | `data-sync.md` | How `pulse-sync` fetches GitHub data incrementally | a sync slice runs |
 | `learning-path.md` | Chapters and the guided-page experience | a chapter is added |
+| `ui-guidelines.md` | Rules for templates, controllers, htmx and UI tests, with their sources | a source changes a rule |
+| `references.md` | Books, blog feed and posts, upstream projects, with review dates | at the start of each slice |
 | `roadmap.md` | Every slice and its status | every slice |
 | `slices/` | One spec per slice, from `_template.md` | while the slice is active |
 | `decisions/` | One ADR per decision | a decision is made |
-| `upstream-findings.md` | Viaduct bugs, doc drift and API gaps found while building | a finding is verified |
+| `upstream-findings.md` | Bugs, doc drift and contribution ideas for Viaduct, Shadleaf and htmx-spring-boot | a finding is verified |
 
 ## Slice lifecycle
 

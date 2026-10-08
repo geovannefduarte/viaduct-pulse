@@ -4,7 +4,7 @@ One slice is in progress at a time. Statuses are defined in [README](README.md#s
 
 | Slice | Title | Chapter | Status | Spec |
 |---|---|---|---|---|
-| S00 | Skeleton: Gradle, Spring Boot, embedded Postgres, Flyway, htmx home page | — | draft | [S00](slices/S00-skeleton.md) |
+| S00 | Skeleton: Gradle, Spring Boot 4.1 with Kotlin 2.2, embedded Postgres, Flyway, Shadleaf and htmx home page | — | draft | [S00](slices/S00-skeleton.md) |
 | S01 | pulse-sync v1: commits and contributors, incremental, seed; plain-SQL pages | 1 | planned | — |
 | S02 | Embed Viaduct: one module, Spring injector factory, `/graphql`, GraphiQL, guided-page frame | 2 | planned | — |
 | S03 | Compatibility canary CI: pinned, latest and snapshot Viaduct versions; automated update PRs | — | planned | — |
@@ -22,6 +22,7 @@ One slice is in progress at a time. Statuses are defined in [README](README.md#s
 ## Later
 
 These are ideas, not commitments:
+- htmx 4 with `htmx-spring-boot` 6;
 - a Java tenant module;
 - comparing Viaduct's two execution engines;
 - a chapter comparing Viaduct with database-generated GraphQL (pg_graphql).

@@ -36,12 +36,15 @@ Each chapter page has the same parts:
 
 ## Query card
 
-A query card is an editable GraphQL query with a Run button. htmx posts it to the server and swaps in a
-server-rendered fragment with three tabs:
+A query card is a Shadleaf card holding an editable GraphQL query and a Run button. It is a form that posts with
+htmx. The server answers with a fragment holding three Shadleaf tabs:
 
 - **Result:** the JSON response.
 - **SQL:** the statements this request ran, in order. This makes the N+1 chapter visible.
 - **Timings:** per-field timings from Viaduct's Micrometer timers, available from S12. Earlier chapters show total
   time only.
 
-A separate free-exploration page embeds GraphiQL.
+Validation and GraphQL errors come back as the same fragment with status 200
+([UI guidelines](ui-guidelines.md#htmx)). Cards use relative targets, so a page can hold any number of them.
+
+A separate free-exploration page embeds GraphiQL, served as a webjar.
