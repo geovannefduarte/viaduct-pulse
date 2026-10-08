@@ -9,6 +9,11 @@ dependencyManagement {
                 .get()
                 .toString(),
         )
+        mavenBom(
+            libs.spring.modulith.bom
+                .get()
+                .toString(),
+        )
     }
 }
 
@@ -30,4 +35,5 @@ dependencies {
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.spring.boot.starter.webmvc.test)
     testImplementation(libs.htmlunit)
+    testImplementation(libs.spring.modulith.starter.test)
 }

@@ -1,15 +1,18 @@
-package dev.geovanne.pulse.status
+package dev.geovanne.pulse.system.persistence
 
+import dev.geovanne.pulse.system.domain.AppliedMigration
+import dev.geovanne.pulse.system.domain.DatabaseStatus
+import dev.geovanne.pulse.system.domain.DatabaseStatusSource
 import org.flywaydb.core.Flyway
 import org.springframework.jdbc.core.simple.JdbcClient
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
-@Service
-class DatabaseStatusService(
+@Component
+class PostgresDatabaseStatusSource(
     private val jdbcClient: JdbcClient,
     private val flyway: Flyway,
-) {
-    fun current(): DatabaseStatus =
+) : DatabaseStatusSource {
+    override fun current(): DatabaseStatus =
         DatabaseStatus(
             postgresVersion = jdbcClient.sql("show server_version").query(String::class.java).single(),
             appliedMigrations =

@@ -9,6 +9,7 @@ shadleaf = "0.7.0"
 spotless = "8.10.3"
 spring-boot = "4.1.1"
 spring-dependency-management = "1.1.7"
+spring-modulith = "2.1.1"
 
 [libraries]
 embedded-postgres = { module = "io.zonky.test:embedded-postgres", version.ref = "embedded-postgres" }
@@ -27,6 +28,8 @@ spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-star
 spring-boot-starter-thymeleaf = { module = "org.springframework.boot:spring-boot-starter-thymeleaf" }
 spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" }
 spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
+spring-modulith-bom = { module = "org.springframework.modulith:spring-modulith-bom", version.ref = "spring-modulith" }
+spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
 webjars-locator-lite = { module = "org.webjars:webjars-locator-lite" }
 
 kotlin-allopen-plugin = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin" }

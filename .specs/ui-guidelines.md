@@ -50,8 +50,11 @@ source. When a newer source contradicts an older one, the newer one wins and the
 
 ## Controllers
 
-- **Controllers stay thin and delegate to services.** There is one controller per path section, in a `web`
-  sub-package of the feature. (TT ch7 §7.1, §7.6)
+- **Controllers stay thin and delegate to services.** There is one controller per path section, in the `web`
+  package of its domain, and it calls that domain's `application` layer. (TT ch7 §7.1, §7.6) **Adapted:** TT puts
+  `web` directly under the feature; we add the layers of
+  [ADR 0009](decisions/0009-domain-packages-with-ports-and-adapters.md).
+- **Templates follow the domains:** `templates/<domain>/…`, plus the shared `layout/` and `error/`. **Ours.**
 - **URLs follow one scheme:** `GET /runs`, `GET /runs/{id}`, `GET|POST /runs/{id}/annotations`. (TT ch11–13)
 - **After a successful form POST, redirect** (Post/Redirect/Get), with a flash message where useful. (TT §7.4, §13.3)
 - **Typed IDs bind through a `Converter`.** Shared reference data comes from `@ModelAttribute` methods, and app-wide

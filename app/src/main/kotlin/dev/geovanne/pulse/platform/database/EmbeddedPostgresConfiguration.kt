@@ -1,4 +1,4 @@
-package dev.geovanne.pulse.database
+package dev.geovanne.pulse.platform.database
 
 import com.zaxxer.hikari.HikariDataSource
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres

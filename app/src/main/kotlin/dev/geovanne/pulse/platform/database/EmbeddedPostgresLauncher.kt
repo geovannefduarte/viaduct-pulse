@@ -1,4 +1,4 @@
-package dev.geovanne.pulse.database
+package dev.geovanne.pulse.platform.database
 
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres
 import java.nio.file.Path

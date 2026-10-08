@@ -1,4 +1,4 @@
-package dev.geovanne.pulse.database
+package dev.geovanne.pulse.platform.database
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.nio.file.Path

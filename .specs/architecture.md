@@ -18,6 +18,7 @@ Versions were checked on Maven Central, the npm registry and services.gradle.org
 | Components | Shadleaf (`io.github.wimdeblauwe:shadleaf-spring-boot-starter`), which bundles its CSS and Alpine.js | 0.7.0 | [ADR 0007](decisions/0007-ui-follows-wim-deblauwe-with-shadleaf.md) |
 | htmx integration | `io.github.wimdeblauwe:htmx-spring-boot-thymeleaf` | 5.2.0 | [ADR 0007](decisions/0007-ui-follows-wim-deblauwe-with-shadleaf.md) |
 | Browser libraries | webjars `org.webjars.npm:htmx.org` and `org.webjars.npm:graphiql`, served via `webjars-locator-lite` | htmx 2.0.11, GraphiQL 5.2.1, locator managed by Spring Boot | [ADR 0007](decisions/0007-ui-follows-wim-deblauwe-with-shadleaf.md) |
+| Architecture tests | Spring Modulith (`spring-modulith-starter-test`), which brings ArchUnit 1.4.2; test scope only | 2.1.1 | [ADR 0009](decisions/0009-domain-packages-with-ports-and-adapters.md) |
 | Browser-level tests | HtmlUnit | managed by Spring Boot (4.21.0) | [UI guidelines](ui-guidelines.md#testing) |
 | Build | Gradle, Kotlin DSL, version catalog | 9.1.0 | — |
 | Formatting and lint | Spotless with ktlint | Spotless 8.10.3, ktlint 1.8.0 | — |
@@ -39,6 +40,26 @@ viaduct-pulse/
 
 **Unverified:** that Viaduct's settings plugin accepts a Spring Boot application project next to a non-Viaduct
 project such as `:sync`. S02 confirms it.
+
+## Code structure
+
+Each domain is a package under `dev.geovanne.pulse` with up to four layers: `domain`, `application`, `web` and
+`persistence` ([ADR 0009](decisions/0009-domain-packages-with-ports-and-adapters.md)). Shared setup lives in
+`platform`.
+
+```
+dev.geovanne.pulse/
+├── PulseApplication.kt
+├── platform/database/          # embedded Postgres and the DataSource
+├── home/web/                   # the home page
+└── system/                     # the database status card
+    ├── domain/                 # DatabaseStatus, and the DatabaseStatusSource port
+    ├── application/            # DatabaseStatusService
+    ├── persistence/            # PostgresDatabaseStatusSource: SQL and Flyway
+    └── web/                    # StatusController
+```
+
+`ArchitectureTest` fails the build when a module boundary or a layer direction is broken.
 
 ## Request path
 

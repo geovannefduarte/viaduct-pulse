@@ -1,6 +1,6 @@
-package dev.geovanne.pulse.status.web
+package dev.geovanne.pulse.system.web
 
-import dev.geovanne.pulse.status.DatabaseStatusService
+import dev.geovanne.pulse.system.application.DatabaseStatusService
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -16,12 +16,12 @@ class StatusController(
     @HxRequest(target = "status-card")
     fun statusCard(model: Model): String {
         model.addAttribute("status", databaseStatusService.current())
-        return "status :: status-card(status=\${status})"
+        return "system/status :: status-card(status=\${status})"
     }
 
     @GetMapping
     fun statusPage(model: Model): String {
         model.addAttribute("status", databaseStatusService.current())
-        return "home"
+        return "home/home"
     }
 }

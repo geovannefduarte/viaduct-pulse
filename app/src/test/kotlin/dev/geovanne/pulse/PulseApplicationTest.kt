@@ -1,6 +1,6 @@
 package dev.geovanne.pulse
 
-import dev.geovanne.pulse.status.DatabaseStatusService
+import dev.geovanne.pulse.system.application.DatabaseStatusService
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers.containsString
 import org.junit.jupiter.api.Test

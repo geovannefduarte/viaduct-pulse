@@ -1,4 +1,4 @@
-package dev.geovanne.pulse.status
+package dev.geovanne.pulse.system.domain
 
 object DatabaseStatuses {
     fun aDatabaseStatus(): DatabaseStatus =
