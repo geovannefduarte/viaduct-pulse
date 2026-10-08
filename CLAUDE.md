@@ -1,0 +1,36 @@
+# viaduct-pulse
+
+A Spring Boot application that serves analytics about the public `airbnb/viaduct` GitHub repository through
+[Viaduct](https://github.com/airbnb/viaduct), an open-source GraphQL server. It has three jobs:
+
+1. Learn Viaduct end to end by building a real application with it, one slice at a time.
+2. Let others learn the same way: each slice is a tagged chapter with a guided page in the running app.
+3. Act as a compatibility canary: its tests run against each new Viaduct release before the app upgrades.
+
+## Start here
+
+Plans live in `.specs/`. Before changing code:
+
+1. Read `.specs/README.md` for how specs work.
+2. Find the active slice in `.specs/roadmap.md` and read its spec in `.specs/slices/`.
+3. Read only the cross-cutting specs that the slice spec links.
+
+Work stays inside the active slice's scope. If the work needs something its spec doesn't cover, update the spec
+first, then the code.
+
+## Rules
+
+- **This repository is public.** Reference Viaduct only through public sources: github.com/airbnb/viaduct,
+  viaduct.airbnb.tech, Maven Central and the Gradle Plugin Portal.
+- **Public GitHub data only.** Store logins, display names and avatar URLs. Never store commit or account emails.
+- **Public Viaduct API only.** If a feature needs an internal Viaduct class, record it in
+  `.specs/upstream-findings.md` instead of using it ([ADR 0005](.specs/decisions/0005-public-viaduct-api-only.md)).
+- **No second graphql-java.** Never add `spring-boot-starter-graphql` or graphql-java itself; Viaduct's runtime jar
+  bundles it ([architecture](.specs/architecture.md#constraints)).
+- **Every slice ships tests.** Every claim in a spec is either verified, with how, or marked unverified.
+- **Versions are pinned** in `gradle/libs.versions.toml`. Bump Spring Boot, Kotlin or Viaduct only in a slice that
+  plans it.
+
+## Commands
+
+None yet. Slice S00 adds the build; record the `./gradlew` commands here when it lands.
