@@ -27,6 +27,11 @@ first, then the code.
   `.specs/upstream-findings.md` instead of using it ([ADR 0005](.specs/decisions/0005-public-viaduct-api-only.md)).
 - **No second graphql-java.** Never add `spring-boot-starter-graphql` or graphql-java itself; Viaduct's runtime jar
   bundles it ([architecture](.specs/architecture.md#constraints)).
+- **UI code follows [`.specs/ui-guidelines.md`](.specs/ui-guidelines.md).** It adapts Wim Deblauwe's Thymeleaf
+  and htmx guidance to this stack: Shadleaf components, htmx, webjars, no Node toolchain, no Layout Dialect.
+  Before writing templates or controllers, read the sections that apply.
+- **Never copy text or code from the books listed in [`.specs/references.md`](.specs/references.md).** Cite them by
+  chapter and section instead.
 - **Every slice ships tests.** Every claim in a spec is either verified, with how, or marked unverified.
 - **Versions are pinned** in `gradle/libs.versions.toml`. Bump Spring Boot, Kotlin or Viaduct only in a slice that
   plans it.

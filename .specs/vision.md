@@ -28,7 +28,8 @@
 ## Non-goals
 
 - A general GitHub analytics product. Pulse reads one configured repository.
-- A JavaScript single-page app or a frontend build step. GraphiQL from a CDN is the one widget exception
-  ([ADR 0003](decisions/0003-thymeleaf-and-htmx.md)).
+- A JavaScript single-page app or a frontend build step. Pulse uses two prebuilt libraries: Shadleaf, which bundles
+  Alpine.js, and the GraphiQL widget, served as a webjar
+  ([ADR 0007](decisions/0007-ui-follows-wim-deblauwe-with-shadleaf.md)).
 - Production deployment or real authentication. Viewers are simulated for teaching ([domain](domain.md#viewers)).
 - Replacing Viaduct's documentation. Chapters link to it.

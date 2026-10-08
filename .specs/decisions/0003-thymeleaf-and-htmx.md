@@ -1,6 +1,6 @@
 # 0003: Thymeleaf and htmx, no JavaScript framework
 
-- **Status:** accepted, 2026-10-07
+- **Status:** superseded by [0007](0007-ui-follows-wim-deblauwe-with-shadleaf.md), 2026-10-08
 
 ## Context
 

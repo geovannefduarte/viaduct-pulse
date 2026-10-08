@@ -1,6 +1,6 @@
 # 0001: Spring Boot 4.0 with Kotlin 2.2
 
-- **Status:** accepted, 2026-10-07
+- **Status:** superseded by [0006](0006-spring-boot-4-1-with-kotlin-2-2.md), 2026-10-08
 
 ## Context
 
