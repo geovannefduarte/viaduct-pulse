@@ -1,6 +1,7 @@
 # 0006: Spring Boot 4.1 with Kotlin held at 2.2
 
-- **Status:** accepted, 2026-10-08. Supersedes [0001](0001-spring-boot-4-0-and-kotlin-2-2.md).
+- **Status:** accepted, 2026-10-08. Supersedes [0001](0001-spring-boot-4-0-and-kotlin-2-2.md). Corrected 2026-10-08: how
+  Kotlin is held at 2.2.21 (S00).
 
 ## Context
 
@@ -15,7 +16,9 @@
 ## Decision
 
 - Use Spring Boot 4.1.1.
-- Override its managed Kotlin version to 2.2.21, so the compiler, the standard library and the Viaduct check agree.
+- Hold Kotlin at 2.2.21, so the compiler, the standard library and the Viaduct check agree. Applying the 2.2.21 Kotlin
+  Gradle plugin is enough: Spring Boot's Gradle plugin sets its managed `kotlin.version` from the applied plugin
+  (verified in S00).
 
 ## Consequences
 
@@ -24,4 +27,4 @@
   Kotlin 2.2.21. S00 proves it before anything else is built.
 - **Fallback if S00 disproves it:** Spring Boot 4.0.8, where Shadleaf is untested. Testing Shadleaf on 4.0.x then
   becomes an upstream contribution.
-- The override is removed in the slice that adopts a Viaduct release supporting Kotlin 2.3.
+- The Kotlin plugin moves to 2.3 in the slice that adopts a Viaduct release supporting Kotlin 2.3.

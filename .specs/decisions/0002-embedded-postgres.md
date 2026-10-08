@@ -1,6 +1,6 @@
 # 0002: Embedded Postgres, plain SQL
 
-- **Status:** accepted, 2026-10-07
+- **Status:** accepted, 2026-10-07. Corrected 2026-10-08: the Postgres binaries version (S00).
 
 ## Context
 
@@ -11,8 +11,10 @@
 
 ## Decision
 
-- Run a real Postgres through `io.zonky.test:embedded-postgres` 2.2.2. It ships Postgres 18.6 binaries, including
-  `darwin-arm64v8`.
+- Run a real Postgres through `io.zonky.test:embedded-postgres` 2.2.2.
+- Use Postgres 18.6 by importing `io.zonky.test.postgres:embedded-postgres-binaries-bom` 18.6.0 and adding the
+  `darwin-arm64v8` and `linux-arm64v8` binaries. On its own, `embedded-postgres` 2.2.2 pulls Postgres 14.22.0
+  binaries for x86 platforms only (its POM, checked in S00).
 - Manage the schema with Flyway.
 - Access data with Spring's `JdbcClient` and hand-written SQL. No ORM.
 
