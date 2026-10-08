@@ -20,7 +20,7 @@ None. This slice proves the stack before Viaduct is added.
 
 **In:**
 - **Toolchain check first.** Before anything else, a Kotlin app must compile and start with:
-  - Spring Boot 4.1.1, with its managed Kotlin overridden to 2.2.21
+  - Spring Boot 4.1.1, with Kotlin held at 2.2.21
     ([ADR 0006](../decisions/0006-spring-boot-4-1-with-kotlin-2-2.md));
   - JDK 25 from `.tool-versions`, with bytecode target 24 ([ADR 0008](../decisions/0008-java-25-via-asdf.md)).
 
@@ -136,11 +136,11 @@ Checked on 2026-10-08 on macOS arm64.
   `graphql.GraphQL` loads.
 - **Theme toggle, and htmx filling the card in a browser:** checked by the owner in a browser: the card loaded on its
   own, and the dark theme applied. The HtmlUnit tests cover the rendered markup with JavaScript off.
-- **Corrections to earlier claims:**
-  - `embedded-postgres` 2.2.2 alone pulls Postgres 14.22.0 binaries for x86 platforms only, not 18.6 as
-    [ADR 0002](../decisions/0002-embedded-postgres.md) says. The build imports `embedded-postgres-binaries-bom` 18.6.0
-    and adds the arm64 artifacts ([architecture](../architecture.md#constraints)).
-  - [ADR 0006](../decisions/0006-spring-boot-4-1-with-kotlin-2-2.md) calls for overriding the managed Kotlin version.
+- **Corrections to earlier claims,** now fixed in the ADRs:
+  - [ADR 0002](../decisions/0002-embedded-postgres.md) said `embedded-postgres` 2.2.2 ships Postgres 18.6. It pulls
+    14.22.0 binaries for x86 platforms only; the build imports `embedded-postgres-binaries-bom` 18.6.0 and adds the
+    arm64 artifacts.
+  - [ADR 0006](../decisions/0006-spring-boot-4-1-with-kotlin-2-2.md) called for overriding the managed Kotlin version.
     Applying the 2.2.21 Kotlin plugin is enough; see the first item.
 - **Makefile.** `make` lists nine targets. With `JAVA_HOME` unset, `make build` passed and Gradle reported launcher
   and daemon JVM 25 under `make`, both from the tool shell and from a fresh `zsh -i`. Control: with asdf off `PATH`,
