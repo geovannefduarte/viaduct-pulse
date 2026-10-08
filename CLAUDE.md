@@ -38,4 +38,11 @@ first, then the code.
 
 ## Commands
 
-None yet. Slice S00 adds the build; record the `./gradlew` commands here when it lands.
+Run these from the repository root. asdf picks the JDK from `.tool-versions`.
+
+| Command | Does |
+|---|---|
+| `./gradlew bootRun` | Starts the app on http://localhost:8080 with the `local` profile; data lives in `.pulse/pgdata` |
+| `./gradlew build` | Compiles, runs every test and checks formatting |
+| `./gradlew :app:test` | Runs the app's tests only |
+| `./gradlew spotlessApply` | Formats Kotlin sources and Gradle scripts with ktlint |
