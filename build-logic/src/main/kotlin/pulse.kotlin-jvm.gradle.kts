@@ -9,7 +9,7 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(25)
 }
 
-// Kotlin 2.2 can't emit Java 25 bytecode; move both targets to 25 with Kotlin 2.3 (ADR 0008).
+// Kotlin 2.2 has no JVM_25 target (ADR 0008).
 kotlin {
     compilerOptions.jvmTarget = JvmTarget.JVM_24
 }

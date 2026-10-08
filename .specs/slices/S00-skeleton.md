@@ -135,7 +135,7 @@ Checked on 2026-10-08 on macOS arm64.
 - **Shutdown order.** With zonky's default shutdown hook, Postgres stopped about 0.9 s before the connection pool
   closed. With `setRegisterShutdownHook(false)`, the log shows graceful shutdown, then the pool, then Postgres, and no
   `postgres` process remains.
-- **Build.** `./gradlew build` runs 17 tests (0 failures) and `spotlessCheck` for the root, `app` and `sync`.
+- **Build.** `./gradlew build` runs 23 tests (0 failures) and `spotlessCheck` for the root, `app` and `sync`.
   Positive controls: a misformatted Kotlin file and a misformatted `build-logic` script each failed `spotlessCheck`.
   A template using the Layout Dialect and a CDN script failed both `StackRulesTest` template rules.
 - **No graphql-java.** `./gradlew :app:dependencies` lists no `graphql` artifact. `StackRulesTest` fails if
@@ -155,4 +155,19 @@ Checked on 2026-10-08 on macOS arm64.
 - **Architecture.** `ArchitectureTest` passes on the domain layout. Positive controls, each removed afterwards: a
   Spring annotation in `system.domain` failed the domain rule; `application` using a `persistence` class failed the
   application rule; a class in `home` using `system.persistence` failed Spring Modulith's `verify()` alone.
+- **Review fixes:**
+  - **Durability.** zonky starts Postgres with `fsync` and `synchronous_commit` off.
+    `EmbeddedPostgresDurabilityTest` failed with `fsync` = `off`, then passed once the launcher set both to `on`.
+  - **Request errors.** Checked in headless Chrome against the running app, with `/status` made to fail through
+    request interception. A 500 response, or no response within the 10 s htmx timeout, shows the error message and a
+    retry button and sets `aria-busy` to `false`; "Try again" then loads the card. With `request-errors.js` blocked, the
+    same 500 left the card on "Loading…", as reported in review. The page-level fallback for regions without an error
+    slot has no caller yet and is unverified.
+  - **Apostrophes.** `ErrorPagesTest` hit the real 404 page and saw `doesn''t`; it passes with single apostrophes.
+    `StackRulesTest` now checks the bundle, and failed when a doubled apostrophe was added to a message without
+    arguments.
+  - **Temporary data directories.** Tests use `pulse.postgres.ephemeral=true`, where zonky deletes its directory on
+    close. A full test run left no new directories (11 left by earlier runs were removed).
+  - **Guards.** The template rules check sample strings, including `th:src="@{https://…}"` and
+    `~{sl/layout::assets}`. The domain rule is an allowlist and failed on a `jakarta` import in `system.domain`.
 - **Tag:** S00 has no chapter, so no `chNN` tag.

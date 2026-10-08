@@ -10,6 +10,7 @@
   <link rel="stylesheet" th:href="@{/css/app.css}">
   <meta name="htmx-config" content='{"timeout": 10000, "includeIndicatorStyles": false, "allowEval": false}'>
   <script th:src="@{/webjars/htmx.org/dist/htmx.min.js}" defer></script>
+  <script th:src="@{/js/request-errors.js}" defer></script>
 </head>
 <body>
 <sl:skip-link/>
@@ -25,5 +26,14 @@
   <h1 class="page-title" th:text="${pageTitle}">Title</h1>
   <th:block th:replace="${content}"></th:block>
 </main>
+<div id="request-errors" class="request-errors" role="alert" hidden th:data-message="#{request.page-error}"></div>
+<template id="request-error">
+  <div class="request-error" role="alert">
+    <p th:text="#{request.error}">This part of the page couldn't load.</p>
+    <sl:button variant="outline" size="sm" data-request-retry>
+      <span th:text="#{request.retry}">Try again</span>
+    </sl:button>
+  </div>
+</template>
 </body>
 </html>

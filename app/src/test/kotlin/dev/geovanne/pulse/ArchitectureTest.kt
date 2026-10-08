@@ -2,12 +2,13 @@ package dev.geovanne.pulse
 
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.core.importer.ImportOption
+import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
 import org.junit.jupiter.api.Test
 import org.springframework.modulith.core.ApplicationModules
 
 class ArchitectureTest {
-    private val classes =
+    private val pulseClasses =
         ClassFileImporter()
             .withImportOption(ImportOption.DoNotIncludeTests())
             .importPackages("dev.geovanne.pulse")
@@ -18,22 +19,14 @@ class ArchitectureTest {
     }
 
     @Test
-    fun `domain depends on no framework and on no other layer`() {
-        noClasses()
+    fun `domain depends only on the JDK, Kotlin and other domain types`() {
+        classes()
             .that()
             .resideInAPackage("dev.geovanne.pulse..domain..")
             .should()
-            .dependOnClassesThat()
-            .resideInAnyPackage(
-                "org.springframework..",
-                "org.flywaydb..",
-                "java.sql..",
-                "javax.sql..",
-                "dev.geovanne.pulse..application..",
-                "dev.geovanne.pulse..web..",
-                "dev.geovanne.pulse..persistence..",
-                "dev.geovanne.pulse.platform..",
-            ).check(classes)
+            .onlyDependOnClassesThat()
+            .resideInAnyPackage("java..", "kotlin..", "org.jetbrains.annotations..", "dev.geovanne.pulse..domain..")
+            .check(pulseClasses)
     }
 
     @Test
@@ -44,7 +37,7 @@ class ArchitectureTest {
             .should()
             .dependOnClassesThat()
             .resideInAnyPackage("dev.geovanne.pulse..web..", "dev.geovanne.pulse..persistence..")
-            .check(classes)
+            .check(pulseClasses)
     }
 
     @Test
@@ -55,13 +48,13 @@ class ArchitectureTest {
             .should()
             .dependOnClassesThat()
             .resideInAPackage("dev.geovanne.pulse..persistence..")
-            .check(classes)
+            .check(pulseClasses)
         noClasses()
             .that()
             .resideInAPackage("dev.geovanne.pulse..persistence..")
             .should()
             .dependOnClassesThat()
             .resideInAPackage("dev.geovanne.pulse..web..")
-            .check(classes)
+            .check(pulseClasses)
     }
 }

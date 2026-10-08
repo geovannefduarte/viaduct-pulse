@@ -30,6 +30,10 @@
   provides through Spring.
 - **Tests enforce the rules:** `ApplicationModules.verify()` from Spring Modulith, plus ArchUnit rules for the layer
   directions.
+- **Other domains see only a domain's base package.** That is Spring Modulith's default, and every layer lives in a
+  sub-package, so today no domain can call another. The first slice with a cross-domain call decides how a domain
+  exposes its `application` services, for example `@NamedInterface` or a facade in the base package, and records it
+  here.
 - **Viaduct resolvers will be adapters too.** S02 decides how tenant modules reach a domain's `application` layer.
 
 ## Consequences

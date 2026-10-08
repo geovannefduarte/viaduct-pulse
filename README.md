@@ -2,8 +2,8 @@
 
 Pulse is a small web application about the [airbnb/viaduct](https://github.com/airbnb/viaduct) repository: its
 commits, contributors, pull requests, releases and CI runs. It is built on [Viaduct](https://viaduct.airbnb.tech),
-an open-source GraphQL server, and exists to learn Viaduct one step at a time. Each step is a tagged chapter with a
-guided page in the running app.
+an open-source GraphQL server, and exists to learn Viaduct one step at a time. The goal is for each step to be a
+tagged chapter with a guided page in the running app; the first chapters are still being built.
 
 It is a Kotlin Spring Boot application with server-rendered pages: Thymeleaf, htmx and
 [Shadleaf](https://wimdeblauwe.github.io/shadleaf/current/) components. Its database is a real Postgres that runs
@@ -32,8 +32,8 @@ reaches into another's internals, or when a layer depends in the wrong direction
 
 ## Where the data comes from
 
-Pulse reads only public metadata of the `airbnb/viaduct` GitHub repository, through git and the GitHub API. It
-stores logins, display names and avatar URLs, and never stores email addresses. Pulse is a personal project, not an
+Pulse will read only public metadata of the `airbnb/viaduct` GitHub repository, through git and the GitHub API. It
+will store logins, display names and avatar URLs, and never email addresses. The first sync arrives in slice S01. Pulse is a personal project, not an
 Airbnb project.
 
 ## License

@@ -85,6 +85,11 @@ Each constraint was verified on 2026-10-07 unless marked otherwise.
     `kotlin.version`.
   - The check predates the 2.0.0 release and is still on main. It has not been tested against the published 2.0.0
     plugin.
+- **Keep the `io.spring.dependency-management` plugin.** It applies the `kotlin.version` that Spring Boot's plugin
+  sets. With Gradle's native `platform()` instead, the Boot BOM's constraint raised kotlin-stdlib to 2.3.21. Verified
+  on 2026-10-08 in a copy of the build without the plugin.
+- **Postgres runs durably.** zonky starts Postgres with `fsync` and `synchronous_commit` off, which suits throwaway
+  test databases. The launcher turns both back on. Verified by `EmbeddedPostgresDurabilityTest`.
 - **Postgres binaries come from zonky's binaries BOM.** `embedded-postgres` 2.2.2 alone pulls Postgres 14.22.0
   binaries for x86 platforms only. The build imports `embedded-postgres-binaries-bom` 18.6.0 and adds the
   `darwin-arm64v8` and `linux-arm64v8` artifacts. Verified in S00 from the 2.2.2 POM and `./gradlew :app:dependencies`.

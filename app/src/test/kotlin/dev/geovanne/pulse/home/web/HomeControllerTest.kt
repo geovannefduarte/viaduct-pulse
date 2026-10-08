@@ -26,8 +26,20 @@ class HomeControllerTest {
         val placeholder = page.getHtmlElementById<HtmlElement>("status-card")
         val loader = placeholder.getFirstByXPath<HtmlElement>("./div[@hx-get]")
         assertThat(loader.getAttribute("hx-get")).isEqualTo("/status")
-        assertThat(loader.getAttribute("hx-trigger")).isEqualTo("load")
         assertThat(page.getElementById("postgres-version")).isNull()
+        assertThat(loader.getAttribute("hx-trigger")).isEqualTo("load, retry")
+        assertThat(placeholder.querySelector<HtmlElement>("[data-request-error-slot]")).isNotNull
+    }
+
+    @Test
+    fun `layout carries the request error template and handler`() {
+        val page: HtmlPage = webClient.getPage("/")
+
+        val template = page.getElementById("request-error").asXml()
+        assertThat(template).contains("This part of the page couldn't load.", "data-request-retry", "Try again")
+        assertThat(page.getElementById("request-errors").getAttribute("data-message"))
+            .isEqualTo("Part of this page couldn't load. Reload the page to try again.")
+        assertThat(page.getByXPath<HtmlElement>("//script[@src='/js/request-errors.js']")).hasSize(1)
     }
 
     @Test

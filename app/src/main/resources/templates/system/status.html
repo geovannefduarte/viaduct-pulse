@@ -4,13 +4,13 @@
 <body>
 <div id="status-card" class="status-card" th:fragment="status-card(status)">
   <div th:if="${status == null}"
-       hx:get="@{/status}" hx-trigger="load" hx-target="closest .status-card" hx-swap="outerHTML">
+       hx:get="@{/status}" hx-trigger="load, retry" hx-target="closest .status-card" hx-swap="outerHTML">
     <sl:card aria-busy="true">
       <sl:card-header>
         <sl:card-title level="2" th:text="#{status.title}">Database</sl:card-title>
-        <sl:card-description th:text="#{status.loading}">Loading…</sl:card-description>
       </sl:card-header>
-      <sl:card-content>
+      <sl:card-content data-request-error-slot>
+        <p class="status-loading" th:text="#{status.loading}">Loading…</p>
         <sl:skeleton/>
         <sl:skeleton/>
       </sl:card-content>

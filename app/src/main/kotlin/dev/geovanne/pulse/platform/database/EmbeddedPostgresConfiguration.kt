@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration
 @Configuration(proxyBeanMethods = false)
 class EmbeddedPostgresConfiguration {
     @Bean(destroyMethod = "close")
-    fun embeddedPostgres(properties: PostgresProperties): EmbeddedPostgres = startEmbeddedPostgres(properties.dataDirectory)
+    fun embeddedPostgres(properties: PostgresProperties): EmbeddedPostgres =
+        if (properties.ephemeral) startEphemeralEmbeddedPostgres() else startEmbeddedPostgres(properties.dataDirectory)
 
     @Bean(destroyMethod = "close")
     fun dataSource(postgres: EmbeddedPostgres): HikariDataSource =

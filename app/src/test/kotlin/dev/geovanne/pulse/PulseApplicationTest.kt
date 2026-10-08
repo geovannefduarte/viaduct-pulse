@@ -7,15 +7,12 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.nio.file.Files
 
-@SpringBootTest
+@SpringBootTest(properties = ["pulse.postgres.ephemeral=true"])
 @AutoConfigureMockMvc
 class PulseApplicationTest {
     @Autowired
@@ -45,14 +42,5 @@ class PulseApplicationTest {
         mockMvc
             .perform(get("/webjars/htmx.org/dist/htmx.min.js"))
             .andExpect(status().isOk)
-    }
-
-    companion object {
-        @JvmStatic
-        @DynamicPropertySource
-        fun postgresDataDirectory(registry: DynamicPropertyRegistry) {
-            val dataDirectory = Files.createTempDirectory("pulse-pgdata")
-            registry.add("pulse.postgres.data-directory") { dataDirectory.toString() }
-        }
     }
 }
