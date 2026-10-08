@@ -24,6 +24,7 @@ These are bugs, doc drift, API gaps and contribution ideas for the open-source p
 | The docs and samples show only Maven and Java; there is no Gradle Kotlin DSL setup and no Kotlin example | `docs/`, `samples/` | verified by grep (0 files mention gradle or kotlin) |
 | Getting Started says "Spring Boot 4", but the compatibility table lists only 4.1.x | `docs/src/content/docs/getting-started.mdx:8`, `README.md:36-42` | verified by reading both |
 | Spring Boot 4.0.x compatibility is untested; Boot 4.0.8 and 4.1.1 manage the same Spring Framework and Thymeleaf | — | managed versions verified on Maven Central; compatibility itself untested |
+| The htmx guide pins `htmx-spring-boot-thymeleaf` 5.1.1; 5.2.0 is the current 5.x release | `guides/htmx` page, "Loading htmx" | verified on the published docs and Maven Central, 2026-10-08 |
 
 ## htmx-spring-boot (wimdeblauwe/htmx-spring-boot)
 

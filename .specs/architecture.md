@@ -11,7 +11,7 @@ Versions were checked on Maven Central, the npm registry and services.gradle.org
 | Framework | Spring Boot, Spring MVC | 4.1.1 | [ADR 0006](decisions/0006-spring-boot-4-1-with-kotlin-2-2.md) |
 | GraphQL server | Viaduct | 2.0.0, the only 2.x release | — |
 | Annotation processing | KSP | 2.2.21-2.0.5 | required by Viaduct's module plugin |
-| Database | Postgres via `io.zonky.test:embedded-postgres` | 2.2.2, Postgres 18.6 binaries | [ADR 0002](decisions/0002-embedded-postgres.md) |
+| Database | Postgres via `io.zonky.test:embedded-postgres`, binaries from `embedded-postgres-binaries-bom` | 2.2.2, Postgres 18.6.0 | [ADR 0002](decisions/0002-embedded-postgres.md) |
 | Migrations | Flyway | managed by Spring Boot | — |
 | Data access | Spring `JdbcClient`, hand-written SQL | managed by Spring Boot | [ADR 0002](decisions/0002-embedded-postgres.md) |
 | Templates | Thymeleaf, no Layout Dialect | managed by Spring Boot (3.1.5) | [ADR 0007](decisions/0007-ui-follows-wim-deblauwe-with-shadleaf.md) |
@@ -28,8 +28,9 @@ Gradle 9.1.0 is what Viaduct's own demo apps used when 2.0.0 was released. Gradl
 
 ```
 viaduct-pulse/
-├── settings.gradle.kts        # applies Viaduct's settings plugin: includeViaductApplication { … }
+├── settings.gradle.kts        # applies Viaduct's settings plugin from S02: includeViaductApplication { … }
 ├── gradle/libs.versions.toml
+├── build-logic/               # convention plugins: pulse.formatting, pulse.kotlin-jvm, pulse.spring-boot-app
 ├── app/                       # the Spring Boot app; becomes the Viaduct application project in S02
 ├── sync/                      # pulse-sync: git and GitHub API → Postgres (S01)
 ├── modules/                   # Viaduct tenant modules; S02 adds the first one, S08 splits it
@@ -56,10 +57,16 @@ Each constraint was verified on 2026-10-07 unless marked otherwise.
 - **Kotlin 2.2 at most, while on Viaduct 2.x.** Viaduct's module plugin fails the build for Kotlin outside
   [1.9, 2.2]. See `validateKotlinVersion` in
   `gradle-plugins/module/src/main/kotlin/viaduct/gradle/ViaductModulePlugin.kt` in airbnb/viaduct.
-  - Spring Boot 4.1.1 manages Kotlin 2.3.21, so the build overrides it to 2.2.21
-    ([ADR 0006](decisions/0006-spring-boot-4-1-with-kotlin-2-2.md)).
+  - Spring Boot 4.1.1 manages Kotlin 2.3.21. The build applies the Kotlin 2.2.21 Gradle plugin, and Spring Boot's
+    Gradle plugin sets the `kotlin.version` property to the applied plugin's version, so kotlin-stdlib resolves to
+    2.2.21 with no explicit override ([ADR 0006](decisions/0006-spring-boot-4-1-with-kotlin-2-2.md)). Verified in S00:
+    `KotlinPluginAction` in `spring-boot-gradle-plugin` 4.1.1, and `dependencyInsight` with and without an explicit
+    `kotlin.version`.
   - The check predates the 2.0.0 release and is still on main. It has not been tested against the published 2.0.0
     plugin.
+- **Postgres binaries come from zonky's binaries BOM.** `embedded-postgres` 2.2.2 alone pulls Postgres 14.22.0
+  binaries for x86 platforms only. The build imports `embedded-postgres-binaries-bom` 18.6.0 and adds the
+  `darwin-arm64v8` and `linux-arm64v8` artifacts. Verified in S00 from the 2.2.2 POM and `./gradlew :app:dependencies`.
 - **Never add a second graphql-java.**
   - `com.airbnb.viaduct:runtime:2.0.0` bundles graphql-java (`graphql.*`) and Guice (`com.google.inject.*`)
     without relocating them.

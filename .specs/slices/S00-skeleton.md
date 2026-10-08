@@ -1,6 +1,6 @@
 # S00: Skeleton
 
-- **Status:** ready
+- **Status:** in-progress
 - **Chapter:** none
 - **Links:**
   - [architecture](../architecture.md)
@@ -63,26 +63,28 @@ None. This slice proves the stack before Viaduct is added.
 ## Design
 
 - **Starting Postgres.** A Spring `@Configuration` starts `EmbeddedPostgres` and exposes its `DataSource`. Spring
-  Boot's `DataSource` auto-configuration steps aside because a `DataSource` bean exists. **Unverified:** the zonky
-  builder options for a fixed data directory that isn't wiped on start. Check them first.
+  Boot's `DataSource` auto-configuration steps aside because a `DataSource` bean exists. zonky's builder keeps a fixed
+  data directory with `setDataDirectory` and `setCleanDataDirectory(false)`; it runs `initdb` only when
+  `postgresql.conf` is missing. `setRegisterShutdownHook(false)` leaves shutdown to Spring, which closes the pool
+  before Postgres. Verified in the 2.2.2 sources and by the restart and shutdown checks below.
 - **Status card.** `/status` serves both callers by checking what the request targets
   ([UI guidelines](../ui-guidelines.md#htmx)).
 - **Tests** start embedded Postgres with a temporary data directory.
 
 ## Acceptance criteria
 
-- [ ] `./gradlew :app:dependencyInsight --dependency kotlin-stdlib` resolves 2.2.21, and the app compiles and starts
+- [x] `./gradlew :app:dependencyInsight --dependency kotlin-stdlib` resolves 2.2.21, and the app compiles and starts
   on Spring Boot 4.1.1.
-- [ ] Gradle and the app run on JDK 25 (`./gradlew -version` and the startup log), and the class files have major
+- [x] Gradle and the app run on JDK 25 (`./gradlew -version` and the startup log), and the class files have major
   version 68, which is Java 24 (`javap -v`).
-- [ ] `./gradlew bootRun` from a clean clone, with Docker not running and no Node installed, serves the home page.
+- [x] `./gradlew bootRun` from a clean clone, with Docker not running and no Node installed, serves the home page.
 - [ ] The home page renders Shadleaf components, and the theme toggle switches between light and dark.
 - [ ] The status card shows the Postgres version. It is filled by an htmx request to `/status`.
-- [ ] `GET /status` without htmx headers returns the full page.
-- [ ] A row written to `sync_state` survives an app restart.
-- [ ] `./gradlew build` passes, including tests and `spotlessCheck`.
-- [ ] The resolved classpath has no `graphql-java` artifact (`./gradlew :app:dependencies`).
-- [ ] No template uses the Thymeleaf Layout Dialect, and no page loads a script from a CDN.
+- [x] `GET /status` without htmx headers returns the full page.
+- [x] A row written to `sync_state` survives an app restart.
+- [x] `./gradlew build` passes, including tests and `spotlessCheck`.
+- [x] The resolved classpath has no `graphql-java` artifact (`./gradlew :app:dependencies`).
+- [x] No template uses the Thymeleaf Layout Dialect, and no page loads a script from a CDN.
 
 ## Tests
 
@@ -96,4 +98,38 @@ None. The port is 8080; the license is Apache-2.0.
 
 ## Verification
 
-—
+Checked on 2026-10-08 on macOS arm64.
+
+- **Kotlin 2.2.21 on Boot 4.1.1.** `dependencyInsight` resolves `kotlin-stdlib:2.2.21` on `runtimeClasspath`. No
+  explicit `kotlin.version` is needed: Spring Boot's Gradle plugin (`KotlinPluginAction`) sets it from the applied
+  Kotlin plugin, and removing the explicit property left the result at 2.2.21. The startup log shows Spring Boot
+  4.1.1.
+- **JDK 25, bytecode 24.** `./gradlew -version` reports launcher and daemon JVM 25.0.4.1 (Corretto). The startup log
+  says "using Java 25.0.4.1". `javap -v` on `PulseApplication.class` shows major version 68. The build prints no
+  JVM-target warnings, `build-logic` included.
+- **Clean clone, no Docker, no Node.** A copy of the tracked files ran `./gradlew :app:bootRun` with only `/usr/bin`
+  and `/bin` on `PATH`, so neither `node` nor `docker` was reachable, and Docker was not running. `GET /` returned
+  200; Flyway logged PostgreSQL 18.6 and applied V1.
+- **Status card.** `GET /status` with `HX-Request` and `HX-Target: status-card` returns only `#status-card` with the
+  version 18.6 and the V1 migration. Without htmx headers, with another target, or as a history-restore request it
+  returns the full page. Covered by `StatusControllerTest` and `PulseApplicationTest`.
+- **Restart.** `EmbeddedPostgresPersistenceTest` writes a `sync_state` row, stops Postgres, starts it on the same
+  directory and reads the row back. A second `bootRun` on the same `.pulse/pgdata` logged "Schema "public" is up to
+  date".
+- **Shutdown order.** With zonky's default shutdown hook, Postgres stopped about 0.9 s before the connection pool
+  closed. With `setRegisterShutdownHook(false)`, the log shows graceful shutdown, then the pool, then Postgres, and no
+  `postgres` process remains.
+- **Build.** `./gradlew build` runs 13 tests (0 failures) and `spotlessCheck` for the root, `app` and `sync`.
+  Positive controls: a misformatted Kotlin file and a misformatted `build-logic` script each failed `spotlessCheck`.
+  A template using the Layout Dialect and a CDN script failed both `StackRulesTest` template rules.
+- **No graphql-java.** `./gradlew :app:dependencies` lists no `graphql` artifact. `StackRulesTest` fails if
+  `graphql.GraphQL` loads.
+- **Theme toggle, and htmx filling the card in a browser:** pending the owner's check. The HtmlUnit tests cover the rendered
+  markup with JavaScript off.
+- **Corrections to earlier claims:**
+  - `embedded-postgres` 2.2.2 alone pulls Postgres 14.22.0 binaries for x86 platforms only, not 18.6 as
+    [ADR 0002](../decisions/0002-embedded-postgres.md) says. The build imports `embedded-postgres-binaries-bom` 18.6.0
+    and adds the arm64 artifacts ([architecture](../architecture.md#constraints)).
+  - [ADR 0006](../decisions/0006-spring-boot-4-1-with-kotlin-2-2.md) calls for overriding the managed Kotlin version.
+    Applying the 2.2.21 Kotlin plugin is enough; see the first item.
+- **Tag:** S00 has no chapter, so no `chNN` tag.
