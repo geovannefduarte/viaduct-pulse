@@ -38,11 +38,15 @@ first, then the code.
 
 ## Commands
 
-Run these from the repository root. asdf picks the JDK from `.tool-versions`.
+Run these from the repository root. `make` lists every target. Make takes `JAVA_HOME` from asdf when asdf has a Java
+version for this folder (`.tool-versions`).
 
 | Command | Does |
 |---|---|
-| `./gradlew bootRun` | Starts the app on http://localhost:8080 with the `local` profile; data lives in `.pulse/pgdata` |
-| `./gradlew build` | Compiles, runs every test and checks formatting |
-| `./gradlew :app:test` | Runs the app's tests only |
-| `./gradlew spotlessApply` | Formats Kotlin sources and Gradle scripts with ktlint |
+| `make run` | Starts the app on http://localhost:8080 with the `local` profile; data lives in `.pulse/pgdata` |
+| `make test` | Runs every test, including the architecture rules |
+| `make build` | Compiles, runs every test and checks formatting |
+| `make format` | Formats Kotlin sources and Gradle scripts with ktlint |
+| `make db-reset` | Deletes the local database; stop the app first |
+
+Each target wraps `./gradlew`, which works directly too, for example `./gradlew :app:test --tests '*StatusControllerTest'`.

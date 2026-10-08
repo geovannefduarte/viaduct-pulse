@@ -11,17 +11,24 @@ embedded in the app.
 
 ## Running it
 
-You need a Java 25 JDK. With [asdf](https://asdf-vm.com), `asdf install` in this folder installs the one pinned in
-`.tool-versions`.
+You need a Java 25 JDK. With [asdf](https://asdf-vm.com), `make setup` installs the one pinned in `.tool-versions`.
 
 ```sh
-./gradlew bootRun
+make run
 ```
 
 Then open http://localhost:8080. No Docker and no Node are needed. The first build downloads the Postgres binaries
 from Maven Central. The database lives in `.pulse/pgdata` and survives restarts.
 
-`./gradlew build` compiles the app, runs the tests and checks the formatting.
+`make build` compiles the app, runs the tests and checks the formatting. `make` lists the other targets. Each one
+wraps `./gradlew`, which works directly too.
+
+## How the code is organized
+
+Each domain is a package with up to four layers: `domain` (the model and its ports), `application` (services),
+`web` (controllers) and `persistence` (SQL). Shared setup lives in `platform`. A test fails the build when one domain
+reaches into another's internals, or when a layer depends in the wrong direction. See
+[ADR 0009](.specs/decisions/0009-domain-packages-with-ports-and-adapters.md).
 
 ## Where the data comes from
 
